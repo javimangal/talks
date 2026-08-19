@@ -18,7 +18,7 @@ pertenece, no aquí.
 talks/
 ├── .nojekyll        ← obligatorio: ver más abajo
 ├── index.html       ← portada bilingüe; el listado de charlas vive aquí dentro
-├── LICENSE          ← CC BY 4.0
+├── LICENSE          ← aviso CC BY 4.0 y las excepciones
 ├── publicar.ps1     ← copia un HTML renderizado a su carpeta
 └── AAAA/
     └── slug-de-la-charla/
@@ -147,3 +147,19 @@ gratuito.
 Contenido bajo [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.es).
 Los logotipos institucionales y las figuras reproducidas de artículos publicados
 conservan la licencia de su fuente y quedan fuera; ver `LICENSE`.
+
+El selector de plantillas de GitHub no ofrece CC BY 4.0 —solo licencias de
+software y, de Creative Commons, CC0—, así que el texto legal completo se trae
+del sitio de Creative Commons. Desde esta carpeta:
+
+```powershell
+Invoke-WebRequest `
+  -Uri "https://creativecommons.org/licenses/by/4.0/legalcode.txt" `
+  -OutFile "LICENSE-CC-BY-4.0.txt"
+```
+
+`LICENSE` se queda como el aviso y la declaración de excepciones;
+`LICENSE-CC-BY-4.0.txt` es el texto oficial. GitHub no mostrará la etiqueta de
+licencia en la barra lateral, porque la detecta comparando el contenido de
+`LICENSE` contra textos conocidos. Es cosmético: la licencia queda concedida
+igual.

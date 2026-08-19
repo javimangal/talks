@@ -24,16 +24,28 @@ Resumen legible (espanol):  https://creativecommons.org/licenses/by/4.0/deed.es
 Texto legal completo:       https://creativecommons.org/licenses/by/4.0/legalcode
 
 --------------------------------------------------------------------------------
-NOTA. Este archivo es el AVISO de licencia, no el texto legal completo. Para que
-GitHub la detecte y la muestre en la barra lateral del repositorio conviene
-sustituirlo por el texto legal oficial. La forma mas segura de hacerlo, sin
-teclearlo a mano:
+NOTA. Este archivo es el AVISO de licencia, no el texto legal completo.
 
-    En GitHub: Add file -> Create new file -> escribir  LICENSE  como nombre ->
-    aparece el boton "Choose a license template" a la derecha -> elegir
-    "Creative Commons Attribution 4.0 International" -> Review and submit.
+El selector de plantillas de GitHub ("Choose a license template") NO ofrece
+CC BY 4.0: solo lista licencias de software y, de Creative Commons, unicamente
+CC0. Por eso el texto legal hay que traerlo del sitio de Creative Commons, que
+lo publica en texto plano. Desde esta carpeta, en PowerShell:
 
-GitHub inserta ahi el texto oficial completo, palabra por palabra.
+    Invoke-WebRequest `
+      -Uri "https://creativecommons.org/licenses/by/4.0/legalcode.txt" `
+      -OutFile "LICENSE-CC-BY-4.0.txt"
+
+Eso deja el texto oficial, palabra por palabra, sin transcribir nada a mano.
+
+Conviene dejarlo en un archivo APARTE y no sobrescribir este, porque las
+excepciones de mas abajo (logotipos institucionales, figuras reproducidas) no
+estan en el texto de Creative Commons y hay que declararlas en algun sitio.
+
+Sobre la insignia de licencia de GitHub: GitHub identifica la licencia
+comparando el contenido de LICENSE contra textos conocidos, asi que con este
+aviso no aparecera la etiqueta en la barra lateral del repositorio. Es un
+detalle de presentacion, no de validez: la licencia queda concedida igual por
+este aviso y por el enlace al texto legal.
 --------------------------------------------------------------------------------
 
 EXCEPCIONES
