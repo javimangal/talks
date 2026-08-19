@@ -1,0 +1,45 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 Javier Mancilla Galindo
+
+El contenido de este repositorio -- presentaciones, figuras y texto -- se
+publica bajo la licencia Creative Commons Attribution 4.0 International.
+
+Usted es libre de:
+
+  * Compartir  -- copiar y redistribuir el material en cualquier medio o
+                  formato.
+  * Adaptar    -- remezclar, transformar y construir a partir del material,
+                  para cualquier finalidad, incluso comercial.
+
+Bajo la siguiente condicion:
+
+  * Atribucion -- debe reconocer adecuadamente la autoria, proporcionar un
+                  enlace a la licencia e indicar si se han realizado cambios.
+                  Puede hacerlo de cualquier manera razonable, pero no de una
+                  manera que sugiera que tiene el apoyo del licenciador o lo
+                  recibe por el uso que hace.
+
+Resumen legible (espanol):  https://creativecommons.org/licenses/by/4.0/deed.es
+Texto legal completo:       https://creativecommons.org/licenses/by/4.0/legalcode
+
+--------------------------------------------------------------------------------
+NOTA. Este archivo es el AVISO de licencia, no el texto legal completo. Para que
+GitHub la detecte y la muestre en la barra lateral del repositorio conviene
+sustituirlo por el texto legal oficial. La forma mas segura de hacerlo, sin
+teclearlo a mano:
+
+    En GitHub: Add file -> Create new file -> escribir  LICENSE  como nombre ->
+    aparece el boton "Choose a license template" a la derecha -> elegir
+    "Creative Commons Attribution 4.0 International" -> Review and submit.
+
+GitHub inserta ahi el texto oficial completo, palabra por palabra.
+--------------------------------------------------------------------------------
+
+EXCEPCIONES
+
+Los logotipos e imagenes institucionales incluidos en las presentaciones
+(Universidad de Utrecht, COMEXANE y otros) pertenecen a sus titulares y NO
+quedan cubiertos por esta licencia. Lo mismo aplica a las figuras reproducidas
+de articulos publicados, que conservan la licencia de su fuente original y se
+citan en cada diapositiva.

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  PORTADA DEL HUB DE CHARLAS  ·  javimangal.github.io/talks
+  ============================================================================
+
+  CÓMO AGREGAR UNA CHARLA. Se toca UN solo sitio: el arreglo `CHARLAS` que está
+  más abajo, dentro del <script>. Todo lo demás (agrupar por año, ordenar por
+  fecha, la etiqueta de idioma, el aviso de "Próxima") se calcula solo.
+
+      1. Renderizar el .html de la baraja en su repo de origen.
+      2. Copiarlo aquí como  AAAA/mi-slug/index.html
+         (el nombre `index.html` es lo que hace que la URL quede limpia, sin
+         extensión: /talks/2026/mi-slug/ en vez de /talks/2026/mi-slug.html).
+         El script `publicar.ps1` hace este paso.
+      3. Añadir una entrada al arreglo CHARLAS.
+      4. git add . && git commit && git push
+
+  POR QUÉ TODO EN UN SOLO ARCHIVO. Es una portada, no una aplicación: sin
+  compilar, sin dependencias, sin build. Se abre con doble clic para revisarla
+  antes de publicar y funciona igual servida por GitHub Pages.
+
+  TIPOGRAFÍA. La única petición externa de esta página es Merriweather desde
+  Google Fonts, que es la fuente de las barajas. Si prefiere cero peticiones
+  externas, borre las tres etiquetas <link rel="preconnect"|"stylesheet"> de
+  más abajo: la pila cae a Georgia, que es un serif de proporciones parecidas,
+  y la página sigue viéndose bien.
+  ============================================================================
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charlas · Javier Mancilla Galindo</title>
+<meta name="description" content="Presentaciones y conferencias de Javier Mancilla Galindo. Talks and lectures by Javier Mancilla Galindo.">
+<meta name="author" content="Javier Mancilla Galindo">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Charlas · Javier Mancilla Galindo">
+<meta property="og:description" content="Presentaciones y conferencias · Talks and lectures">
+<meta property="og:url" content="https://javimangal.github.io/talks/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap">
+
+<style>
+/* --- paleta: la misma de las barajas (identidad Universidad de Utrecht) --- */
+:root {
+  --uu-red:      #C00A35;
+  --uu-yellow:   #FFCD00;
+  --uu-cream:    #FFE6AB;
+  --uu-blue:     #5287C6;
+  --uu-darkblue: #001240;
+  --uu-rule:     #D9D9D9;
+  --gris:        #6E6E6E;   /* 4.9:1 sobre blanco: pasa AA en texto pequeño */
+  --serif:       "Merriweather", Georgia, "Times New Roman", serif;
+  --ancho:       58rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 0 1.5rem 4rem;
+  background: #FFFFFF;
+  color: var(--uu-darkblue);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.envoltura { max-width: var(--ancho); margin: 0 auto; }
+
+a { color: var(--uu-blue); }
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--uu-yellow);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --- encabezado ----------------------------------------------------------
+   El filete amarillo bajo el título es el mismo recurso gráfico que llevan las
+   diapositivas: es lo que ata esta página a las barajas que enlaza. */
+header { padding-top: 3rem; }
+
+.fila-superior {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 5vw, 2.6rem);
+  font-weight: 700;
+  color: var(--uu-red);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.filete {
+  height: 5px;
+  background: var(--uu-yellow);
+  margin: 0.9rem 0 1.4rem;
+}
+
+.presentacion {
+  margin: 0 0 0.6rem;
+  max-width: 46rem;
+}
+
+.enlaces-perfil {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--gris);
+}
+
+.enlaces-perfil a { color: var(--uu-blue); }
+
+/* --- selector de idioma --------------------------------------------------
+   Dos botones y no un <select>: con dos opciones el menú desplegable esconde
+   la mitad de la información y cuesta un clic de más. */
+.idiomas {
+  display: inline-flex;
+  border: 1px solid var(--uu-rule);
+  border-radius: 999px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.idiomas button {
+  font-family: var(--serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.95rem;
+  border: 0;
+  background: #FFFFFF;
+  color: var(--gris);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.idiomas button:hover { background: rgba(255, 205, 0, 0.25); color: var(--uu-darkblue); }
+
+.idiomas button[aria-pressed="true"] {
+  background: var(--uu-red);
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* --- listado de charlas --------------------------------------------------- */
+.anio {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--uu-red);
+  letter-spacing: 0.1em;
+  margin: 2.6rem 0 0.9rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--uu-rule);
+}
+
+.charla {
+  border: 1px solid var(--uu-rule);
+  border-left: 6px solid var(--uu-yellow);
+  border-radius: 4px;
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 1rem;
+  background: #FFFFFF;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.charla:hover {
+  box-shadow: 0 3px 14px rgba(0, 18, 64, 0.10);
+  transform: translateY(-1px);
+}
+
+.charla h3 {
+  font-size: 1.12rem;
+  line-height: 1.35;
+  margin: 0 0 0.45rem;
+  font-weight: 700;
+}
+
+/* El enlace cubre toda la tarjeta: el objetivo de clic es la tarjeta entera y
+   no solo el renglón del título, que en móvil es un blanco muy chico. */
+.charla h3 a {
+  color: var(--uu-darkblue);
+  text-decoration: none;
+}
+
+.charla h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.charla { position: relative; }
+
+.charla:hover h3 a,
+.charla h3 a:focus-visible { color: var(--uu-red); text-decoration: underline; }
+
+.meta {
+  font-size: 0.85rem;
+  color: var(--gris);
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.meta .sep { color: var(--uu-rule); }
+
+/* Se levanta por encima del enlace que cubre la tarjeta para que el resumen se
+   pueda seleccionar y copiar. Sin esto, la capa invisible del enlace se traga
+   la seleccion en toda la tarjeta. */
+.resumen {
+  font-size: 0.92rem;
+  margin: 0.6rem 0 0;
+  color: var(--uu-darkblue);
+  position: relative;
+  z-index: 1;
+}
+
+/* Etiquetas. La de idioma va en gris neutro y la de "Próxima" en crema, para
+   que solo una de las dos llame la atención. */
+.etiqueta {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  border: 1px solid var(--uu-rule);
+  color: var(--gris);
+  white-space: nowrap;
+}
+
+.etiqueta-proxima {
+  background: var(--uu-cream);
+  border-color: var(--uu-yellow);
+  color: #6E3B23;
+  font-weight: 700;
+}
+
+.vacio {
+  color: var(--gris);
+  font-style: italic;
+}
+
+/* --- pie ------------------------------------------------------------------ */
+footer {
+  margin-top: 3.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--uu-rule);
+  font-size: 0.82rem;
+  color: var(--gris);
+}
+
+footer p { margin: 0.35rem 0; }
+footer a { color: var(--gris); }
+
+/* En pantalla angosta la linea de datos se parte, y los puntos de separacion
+   acaban solos al principio de la linea siguiente. Se ocultan: el hueco del
+   `gap` ya separa los elementos de sobra. */
+@media (max-width: 34rem) {
+  .meta .sep { display: none; }
+  .meta { gap: 0.15rem 0.7rem; }
+}
+
+@media (max-width: 30rem) {
+  body { font-size: 16px; }
+  header { padding-top: 2rem; }
+  .charla { padding: 0.9rem 1rem; }
+}
+
+/* Respeta a quien pidió menos movimiento en el sistema operativo. */
+@media (prefers-reduced-motion: reduce) {
+  .charla, .idiomas button { transition: none; }
+  .charla:hover { transform: none; }
+}
+</style>
+</head>
+
+<body>
+<div class="envoltura">
+
+<header>
+  <div class="fila-superior">
+    <h1 data-i18n="titulo">Charlas</h1>
+    <div class="idiomas" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+
+  <div class="filete"></div>
+
+  <p class="presentacion" data-i18n="presentacion">
+    Presentaciones y conferencias de <strong>Javier Mancilla Galindo</strong>,
+    médico e investigador en el Institute for Risk Assessment Sciences,
+    Universidad de Utrecht.
+  </p>
+
+  <p class="enlaces-perfil">
+    <a href="https://research-portal.uu.nl/en/persons/javier-mancilla-galindo/" data-i18n="perfil">Perfil institucional</a>
+    <span class="sep">·</span>
+    <a href="https://orcid.org/0000-0002-0718-467X">ORCID 0000-0002-0718-467X</a>
+  </p>
+</header>
+
+<main id="listado" aria-live="polite"></main>
+
+<noscript>
+  <!-- Sin JavaScript el listado no se dibuja, así que aquí va la lista a mano.
+       Al agregar una charla conviene añadirla también en este bloque. -->
+  <h2 class="anio">2026</h2>
+  <div class="charla">
+    <h3><a href="2026/comexane-tesis-medico-residente/">Aspectos clave para el médico residente al planear y ejecutar su tesis</a></h3>
+    <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · 20 de agosto de 2026</p>
+  </div>
+</noscript>
+
+<footer>
+  <p data-i18n="licencia">
+    Contenido bajo licencia
+    <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.
+    Se puede reutilizar y adaptar citando la fuente.
+  </p>
+  <p>
+    <a href="https://github.com/javimangal/talks" data-i18n="repo">Código de este sitio en GitHub</a>
+    <span class="sep">·</span>
+    <span data-i18n="hecho">Barajas hechas con Quarto y reveal.js</span>
+  </p>
+</footer>
+
+</div>
+
+<script>
+/* ===========================================================================
+   1. LAS CHARLAS
+   ---------------------------------------------------------------------------
+   Una entrada por charla. Campos:
+
+     slug     ruta de la carpeta, relativa a esta página. Sin barra inicial y
+              CON barra final.
+     lang     idioma en que se dio la charla: "es" o "en". Solo pinta la
+              etiqueta; no traduce nada.
+     titulo   en el idioma de la charla. No se traduce: el título de una charla
+              es el que tuvo.
+     evento   congreso, curso o institución.
+     lugar    ciudad y país. Opcional.
+     fecha    AAAA-MM-DD. De aquí salen el orden, el año y el aviso de
+              "Próxima".
+     resumen  {es, en} una o dos líneas. Opcional, pero ayuda a quien llega de
+              fuera a saber si le interesa.
+     =========================================================================== */
+const CHARLAS = [
+  {
+    slug:   "2026/comexane-tesis-medico-residente/",
+    lang:   "es",
+    titulo: "Aspectos clave para el médico residente al planear y ejecutar su tesis",
+    evento: "LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE",
+    lugar:  "México",
+    fecha:  "2026-08-20",
+    resumen: {
+      es: "De la pregunta de investigación al diseño factible: marcos FINER y PICO, elección del diseño, análisis, y qué puede y qué no puede hacer la inteligencia artificial por una tesis.",
+      en: "From the research question to a feasible design: the FINER and PICO frameworks, choosing a study design, analysis, and what artificial intelligence can and cannot do for a thesis."
+    }
+  }
+];
+
+/* ===========================================================================
+   2. TEXTOS DE LA INTERFAZ
+   ---------------------------------------------------------------------------
+   Solo la interfaz. Los títulos de las charlas se quedan en su idioma.
+   =========================================================================== */
+const TEXTOS = {
+  es: {
+    docTitulo:    "Charlas · Javier Mancilla Galindo",
+    titulo:       "Charlas",
+    presentacion: 'Presentaciones y conferencias de <strong>Javier Mancilla Galindo</strong>, médico e investigador en el Institute for Risk Assessment Sciences, Universidad de Utrecht.',
+    perfil:       "Perfil institucional",
+    licencia:     'Contenido bajo licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>. Se puede reutilizar y adaptar citando la fuente.',
+    repo:         "Código de este sitio en GitHub",
+    hecho:        "Barajas hechas con Quarto y reveal.js",
+    proxima:      "Próxima",
+    vacio:        "Todavía no hay charlas publicadas.",
+    etiquetaIdioma: { es: "En español", en: "In English" },
+    aria:         { abrir: "Abrir la presentación:" }
+  },
+  en: {
+    docTitulo:    "Talks · Javier Mancilla Galindo",
+    titulo:       "Talks",
+    presentacion: 'Talks and lectures by <strong>Javier Mancilla Galindo</strong>, physician and researcher at the Institute for Risk Assessment Sciences, Utrecht University.',
+    perfil:       "Institutional profile",
+    licencia:     'Content licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Free to reuse and adapt with attribution.',
+    repo:         "Source of this site on GitHub",
+    hecho:        "Slides built with Quarto and reveal.js",
+    proxima:      "Upcoming",
+    vacio:        "No talks published yet.",
+    etiquetaIdioma: { es: "In Spanish", en: "In English" },
+    aria:         { abrir: "Open the slides:" }
+  }
+};
+
+/* ===========================================================================
+   3. DIBUJADO
+   =========================================================================== */
+
+/* `new Date("2026-08-20")` se interpreta como medianoche UTC, así que en México
+   (UTC-6) se muestra como 19 de agosto. Por eso la fecha se arma por partes, en
+   hora local, y no se pasa la cadena al constructor. */
+function fechaLocal(iso) {
+  const [a, m, d] = iso.split("-").map(Number);
+  return new Date(a, m - 1, d);
+}
+
+function formatearFecha(iso, idioma) {
+  return new Intl.DateTimeFormat(idioma === "es" ? "es-MX" : "en-GB", {
+    day: "numeric", month: "long", year: "numeric"
+  }).format(fechaLocal(iso));
+}
+
+function esFutura(iso) {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+  return fechaLocal(iso) > hoy;
+}
+
+function crearElemento(html) {
+  const t = document.createElement("template");
+  t.innerHTML = html.trim();
+  return t.content.firstElementChild;
+}
+
+function escapar(s) {
+  return String(s).replace(/[&<>"]/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+function dibujar(idioma) {
+  const T = TEXTOS[idioma];
+  const listado = document.getElementById("listado");
+  listado.innerHTML = "";
+
+  if (!CHARLAS.length) {
+    listado.appendChild(crearElemento(`<p class="vacio">${T.vacio}</p>`));
+    return;
+  }
+
+  // Más reciente primero, dentro de cada año y entre años.
+  const ordenadas = [...CHARLAS].sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+  let anioActual = null;
+  for (const c of ordenadas) {
+    const anio = c.fecha.slice(0, 4);
+    if (anio !== anioActual) {
+      anioActual = anio;
+      listado.appendChild(crearElemento(`<h2 class="anio">${anio}</h2>`));
+    }
+
+    const proxima = esFutura(c.fecha)
+      ? `<span class="etiqueta etiqueta-proxima">${T.proxima}</span>`
+      : "";
+
+    const resumen = c.resumen && c.resumen[idioma]
+      ? `<p class="resumen">${escapar(c.resumen[idioma])}</p>`
+      : "";
+
+    const lugar = c.lugar ? `<span class="sep">·</span><span>${escapar(c.lugar)}</span>` : "";
+
+    listado.appendChild(crearElemento(`
+      <article class="charla">
+        <h3>
+          <a href="${escapar(c.slug)}" aria-label="${escapar(T.aria.abrir)} ${escapar(c.titulo)}">${escapar(c.titulo)}</a>
+        </h3>
+        <p class="meta">
+          <span>${escapar(c.evento)}</span>
+          ${lugar}
+          <span class="sep">·</span>
+          <span>${formatearFecha(c.fecha, idioma)}</span>
+          <span class="etiqueta" lang="${c.lang}">${T.etiquetaIdioma[c.lang]}</span>
+          ${proxima}
+        </p>
+        ${resumen}
+      </article>
+    `));
+  }
+}
+
+function aplicarIdioma(idioma) {
+  const T = TEXTOS[idioma];
+  document.documentElement.lang = idioma;
+  document.title = T.docTitulo;
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const clave = el.getAttribute("data-i18n");
+    if (T[clave] !== undefined) el.innerHTML = T[clave];
+  });
+
+  document.querySelectorAll(".idiomas button").forEach(b => {
+    b.setAttribute("aria-pressed", String(b.dataset.lang === idioma));
+  });
+
+  dibujar(idioma);
+
+  // Deja el idioma en la URL para poder compartir "esta página, en inglés"
+  // sin recargar ni ensuciar el historial.
+  const url = new URL(window.location);
+  if (idioma === "es") url.searchParams.delete("lang");
+  else url.searchParams.set("lang", idioma);
+  history.replaceState(null, "", url);
+}
+
+/* Prioridad: lo que pide la URL (?lang=en) > el idioma del navegador >
+   español, que es el idioma de la mayoría de estas charlas. */
+function idiomaInicial() {
+  const pedido = new URLSearchParams(window.location.search).get("lang");
+  if (pedido === "es" || pedido === "en") return pedido;
+  const nav = (navigator.language || "es").slice(0, 2).toLowerCase();
+  return nav === "es" ? "es" : "en";
+}
+
+document.querySelectorAll(".idiomas button").forEach(b => {
+  b.addEventListener("click", () => aplicarIdioma(b.dataset.lang));
+});
+
+aplicarIdioma(idiomaInicial());
+</script>
+
+</body>
+</html>
