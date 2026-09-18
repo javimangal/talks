@@ -6,7 +6,8 @@ Talks and lectures hub — bilingual (Spanish / English).
 **<https://javimangal.github.io/talks/>**
 
 Este repositorio contiene únicamente los **HTML ya renderizados** de las
-presentaciones y la portada que las lista. El código fuente de cada baraja
+presentaciones (o, cuando no existe baraja interactiva, el **PDF** de la
+charla) y la portada que las lista. El código fuente de cada baraja
 (`.qmd`, datos, scripts de R) vive en el repositorio del proyecto al que
 pertenece, no aquí.
 
@@ -21,12 +22,14 @@ talks/
 ├── LICENSE          ← aviso CC BY 4.0 y las excepciones
 ├── publicar.ps1     ← copia un HTML renderizado a su carpeta
 └── AAAA/
-    └── slug-de-la-charla/
-        └── index.html   ← la baraja
+    ├── slug-de-la-charla/
+    │   └── index.html          ← baraja interactiva (reveal.js)
+    └── otro-slug/
+        └── otro-slug.pdf       ← charla que solo existe en PDF
 ```
 
-Una charla por carpeta, y el archivo **siempre** se llama `index.html`. Eso es
-lo que hace que la URL quede limpia:
+Una charla por carpeta. Si es una baraja interactiva, el archivo **siempre**
+se llama `index.html`. Eso es lo que hace que la URL quede limpia:
 
 ```
 https://javimangal.github.io/talks/2026/comexane-tesis-medico-residente/
@@ -35,6 +38,11 @@ https://javimangal.github.io/talks/2026/comexane-tesis-medico-residente/
 y no `…/comexane-tesis-medico-residente.html`. También permite que, si algún
 día una charla necesita recursos al lado (un PDF de respaldo, un anexo), vivan
 en su propia carpeta sin estorbar.
+
+Si la charla solo existe como PDF (sin baraja de Quarto/reveal.js detrás —
+por ejemplo una presentación institucional hecha en PowerPoint o Keynote), el
+archivo se llama igual que la carpeta: `AAAA/mi-slug/mi-slug.pdf`. La portada
+enlaza directo a ese archivo; ver «Si la charla solo existe en PDF» más abajo.
 
 ### Por qué `.nojekyll`
 
@@ -52,6 +60,8 @@ presentación se serviría rota y sin ningún mensaje de error. El archivo
 
 ## Agregar una charla
 
+### Si hay baraja interactiva (Quarto / reveal.js)
+
 1. **Renderizar** el `.html` en el repositorio de origen. Para la baraja de
    COMEXANE:
 
@@ -68,15 +78,30 @@ presentación se serviría rota y sin ningún mensaje de error. El archivo
      -Slug "comexane-tesis-medico-residente"
    ```
 
-3. **Anunciarla** en la portada: abrir `index.html` y añadir una entrada al
+### Si la charla solo existe en PDF
+
+1. **Copiarla** a `AAAA/mi-slug/mi-slug.pdf` (a mano; `publicar.ps1` es solo
+   para barajas HTML y no aplica aquí).
+
+### Después, en ambos casos
+
+1. **Anunciarla** en la portada: abrir `index.html` y añadir una entrada al
    arreglo `CHARLAS`, que está al principio del `<script>` y lleva sus
    instrucciones al lado. Todo lo demás —agrupar por año, ordenar, la etiqueta
    de idioma, el aviso de «Próxima»— se calcula solo a partir de la fecha.
 
+   El campo `slug` cambia según el caso: con barra final para una baraja
+   (`"AAAA/mi-slug/"`, resuelve a `index.html`) o apuntando al archivo completo
+   sin barra final para un PDF (`"AAAA/mi-slug/mi-slug.pdf"`).
+
+   El título (`titulo`) lleva **ambos idiomas**, `{es, en}`: el original (el
+   que tuvo la charla) y una traducción, para que quien navegue en el otro
+   idioma entienda de qué trata sin que se traduzca de más el título real.
+
    Conviene añadirla también en el bloque `<noscript>`, que es la lista que se
    ve si el navegador tiene JavaScript desactivado.
 
-4. **Revisar en local**: doble clic en `index.html`. La portada se ve tal cual
+2. **Revisar en local**: doble clic en `index.html`. La portada se ve tal cual
    quedará publicada.
 
    > Un detalle de la vista previa local: al abrir con doble clic (`file://`),
@@ -91,7 +116,7 @@ presentación se serviría rota y sin ningún mensaje de error. El archivo
    >
    > y abrir <http://localhost:8000/>. Ahí se comporta igual que en producción.
 
-5. **Publicar**:
+3. **Publicar**:
 
    ```
    git add .
@@ -108,6 +133,9 @@ empiece por la sede o el congreso: `comexane-tesis-medico-residente`,
 `smmce-seminario-diseno`, `uu-risk-communication`. Es lo que va a quedar en la
 URL para siempre, así que no conviene meter la fecha (ya está en la carpeta del
 año) ni el número de edición del congreso.
+
+Para una charla en PDF, el archivo dentro de la carpeta lleva el mismo nombre
+que el slug: `comexane-consenso-vmi/comexane-consenso-vmi.pdf`.
 
 ---
 
