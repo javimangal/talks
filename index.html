@@ -8,13 +8,26 @@
   más abajo, dentro del <script>. Todo lo demás (agrupar por año, ordenar por
   fecha, la etiqueta de idioma, el aviso de "Próxima") se calcula solo.
 
+      Si la charla es una baraja interactiva (reveal.js):
       1. Renderizar el .html de la baraja en su repo de origen.
       2. Copiarlo aquí como  AAAA/mi-slug/index.html
          (el nombre `index.html` es lo que hace que la URL quede limpia, sin
          extensión: /talks/2026/mi-slug/ en vez de /talks/2026/mi-slug.html).
-         El script `publicar.ps1` hace este paso.
-      3. Añadir una entrada al arreglo CHARLAS.
-      4. git add . && git commit && git push
+         El script `publicar.ps1` hace este paso. `slug` en CHARLAS lleva
+         barra final: "AAAA/mi-slug/".
+
+      Si la charla solo existe como PDF:
+      1. Copiarlo aquí como  AAAA/mi-slug/mi-slug.pdf  (sin `publicar.ps1`;
+         a mano o con el explorador de archivos).
+      2. `slug` en CHARLAS apunta al archivo completo, SIN barra final:
+         "AAAA/mi-slug/mi-slug.pdf". El enlace de la tarjeta abre el PDF
+         directamente; no hace falta nada más.
+
+      Después, en ambos casos:
+      3. Añadir una entrada al arreglo CHARLAS (título en español e inglés:
+         ver el comentario junto al arreglo).
+      4. Añadirla también al bloque <noscript>, más abajo en este archivo.
+      5. git add . && git commit && git push
 
   POR QUÉ TODO EN UN SOLO ARCHIVO. Es una portada, no una aplicación: sin
   compilar, sin dependencias, sin build. Se abre con doble clic para revisarla
@@ -317,15 +330,25 @@ footer a { color: var(--gris); }
 <main id="listado" aria-live="polite"></main>
 
 <noscript>
-  <!-- Sin JavaScript el listado no se dibuja, así que aquí va la lista a mano.
-       Al agregar una charla conviene añadirla también en este bloque. -->
+  <!-- Sin JavaScript el listado no se dibuja, así que aquí va la lista a mano,
+       en español (el idioma por omisión de esta página) y en orden
+       descendente por fecha. Al agregar una charla conviene añadirla también
+       en este bloque. -->
   <h2 class="anio">2026</h2>
+  <div class="charla">
+    <h3><a href="2026/epicoh2026-poc-scoping-review/epicoh2026-poc-scoping-review.pdf">Probabilidad de causalidad para la compensación por cáncer de pulmón: una revisión de alcance de métodos y alternativas</a></h3>
+    <p class="meta">EPICOH 2026 · Estocolmo, Suecia · 26 de agosto de 2026</p>
+  </div>
   <div class="charla">
     <h3><a href="2026/comexane-consensos-medicos/">Consensos médicos: ¿cómo actuar ante la falta de evidencia científica?</a></h3>
     <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · 22 de agosto de 2026</p>
   </div>
   <div class="charla">
     <h3><a href="2026/comexane-tesis-medico-residente/">Aspectos clave para el médico residente al planear y ejecutar su tesis</a></h3>
+    <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · 20 de agosto de 2026</p>
+  </div>
+  <div class="charla">
+    <h3><a href="2026/comexane-consenso-vmi/comexane-consenso-vmi.pdf">Consenso Mexicano de Ventilación Mecánica Perioperatoria: resultados de las tres rondas de votación</a></h3>
     <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · 20 de agosto de 2026</p>
   </div>
 </noscript>
@@ -351,14 +374,20 @@ footer a { color: var(--gris); }
    ---------------------------------------------------------------------------
    Una entrada por charla. Campos:
 
-     slug     ruta de la carpeta, relativa a esta página. Sin barra inicial y
-              CON barra final.
-     lang     idioma en que se dio la charla: "es" o "en". Solo pinta la
-              etiqueta; no traduce nada.
-     titulo   en el idioma de la charla. No se traduce: el título de una charla
-              es el que tuvo.
-     evento   congreso, curso o institución.
-     lugar    ciudad y país. Opcional.
+     slug     ruta relativa a esta página, sin barra inicial.
+                - Baraja interactiva (carpeta con index.html): CON barra
+                  final, "AAAA/mi-slug/".
+                - PDF u otro archivo suelto: ruta al archivo completo, SIN
+                  barra final, "AAAA/mi-slug/mi-slug.pdf". El enlace abre
+                  el archivo directamente.
+     lang     idioma en que se dio la charla: "es" o "en". Pinta la etiqueta
+              de idioma Y decide, junto con `titulo`/`resumen`, cuál de los
+              dos textos es el original (el otro es la traducción).
+     titulo   {es, en}. El título original (el que tuvo la charla, en su
+              idioma real) NO se traduce de más: la traducción es solo para
+              que quien navega en el otro idioma entienda de qué trata.
+     evento   congreso, curso o institución. No se traduce (nombre propio).
+     lugar    ciudad y país. Opcional. No se traduce.
      fecha    AAAA-MM-DD. De aquí salen el orden, el año y el aviso de
               "Próxima".
      resumen  {es, en} una o dos líneas. Opcional, pero ayuda a quien llega de
@@ -368,7 +397,10 @@ const CHARLAS = [
   {
     slug:   "2026/comexane-tesis-medico-residente/",
     lang:   "es",
-    titulo: "Aspectos clave para el médico residente al planear y ejecutar su tesis",
+    titulo: {
+      es: "Aspectos clave para el médico residente al planear y ejecutar su tesis",
+      en: "Key considerations for medical residents planning and conducting their thesis"
+    },
     evento: "LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE",
     lugar:  "México",
     fecha:  "2026-08-20",
@@ -378,9 +410,27 @@ const CHARLAS = [
     }
   },
   {
+    slug:   "2026/comexane-consenso-vmi/comexane-consenso-vmi.pdf",
+    lang:   "es",
+    titulo: {
+      es: "Consenso Mexicano de Ventilación Mecánica Perioperatoria: resultados de las tres rondas de votación",
+      en: "Mexican Consensus on Perioperative Mechanical Ventilation: results of the three voting rounds"
+    },
+    evento: "LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE",
+    lugar:  "México",
+    fecha:  "2026-08-20",
+    resumen: {
+      es: "Resultados de las tres rondas Delphi del Consenso Mexicano de Ventilación Mecánica Perioperatoria: qué preguntas alcanzó a responder la evidencia, dónde persiste el desacuerdo, y la agenda de investigación que se desprende de cada enunciado.",
+      en: "Results of the three Delphi rounds of the Mexican Consensus on Perioperative Mechanical Ventilation: which questions the evidence could answer, where disagreement persists, and the research agenda that follows from each statement."
+    }
+  },
+  {
     slug:   "2026/comexane-consensos-medicos/",
     lang:   "es",
-    titulo: "Consensos médicos: ¿cómo actuar ante la falta de evidencia científica?",
+    titulo: {
+      es: "Consensos médicos: ¿cómo actuar ante la falta de evidencia científica?",
+      en: "Medical consensus statements: how to act when scientific evidence is lacking?"
+    },
     evento: "LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE",
     lugar:  "México",
     fecha:  "2026-08-22",
@@ -388,13 +438,29 @@ const CHARLAS = [
       es: "Qué es y cómo se construye un consenso médico: método Delphi, guías de reporte ACCORD, y las cuatro formas de incertidumbre que un consenso ayuda a estructurar cuando la evidencia científica falta o no alcanza.",
       en: "What a medical consensus is and how it is built: the Delphi method, ACCORD reporting guidance, and the four kinds of uncertainty a consensus helps structure when scientific evidence is missing or falls short."
     }
+  },
+  {
+    slug:   "2026/epicoh2026-poc-scoping-review/epicoh2026-poc-scoping-review.pdf",
+    lang:   "en",
+    titulo: {
+      es: "Probabilidad de causalidad para la compensación por cáncer de pulmón: una revisión de alcance de métodos y alternativas",
+      en: "Probability of Causation for Lung Cancer Compensation: A Scoping Review of Methods and Alternatives"
+    },
+    evento: "EPICOH 2026",
+    lugar:  "Estocolmo, Suecia",
+    fecha:  "2026-08-26",
+    resumen: {
+      es: "Revisión de alcance de los métodos para estimar la probabilidad de causalidad (PoC) usada para compensar el cáncer de pulmón ocupacional: sus supuestos causales, sus límites, y alternativas como los años de vida perdidos.",
+      en: "A scoping review of methods to estimate the probability of causation (PoC) used to compensate occupational lung cancer: their causal assumptions, their limits, and alternatives such as years of life lost."
+    }
   }
 ];
 
 /* ===========================================================================
    2. TEXTOS DE LA INTERFAZ
    ---------------------------------------------------------------------------
-   Solo la interfaz. Los títulos de las charlas se quedan en su idioma.
+   Solo la interfaz. Los títulos y resúmenes de las charlas viven en su
+   propio objeto {es, en} dentro de CHARLAS, no aquí.
    =========================================================================== */
 const TEXTOS = {
   es: {
@@ -491,10 +557,14 @@ function dibujar(idioma) {
 
     const lugar = c.lugar ? `<span class="sep">·</span><span>${escapar(c.lugar)}</span>` : "";
 
+    // El título vive en su propio idioma y se traduce para quien navega en
+    // el otro; si por algún motivo faltara la traducción, cae al original.
+    const titulo = c.titulo[idioma] || c.titulo[c.lang];
+
     listado.appendChild(crearElemento(`
       <article class="charla">
         <h3>
-          <a href="${escapar(c.slug)}" aria-label="${escapar(T.aria.abrir)} ${escapar(c.titulo)}">${escapar(c.titulo)}</a>
+          <a href="${escapar(c.slug)}" aria-label="${escapar(T.aria.abrir)} ${escapar(titulo)}">${escapar(titulo)}</a>
         </h3>
         <p class="meta">
           <span>${escapar(c.evento)}</span>
