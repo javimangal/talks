@@ -17,10 +17,11 @@
          barra final: "AAAA/mi-slug/".
 
       Si la charla solo existe como PDF:
-      1. Copiarlo aquí como  AAAA/mi-slug/mi-slug.pdf  (sin `publicar.ps1`;
-         a mano o con el explorador de archivos).
+      1. Copiarlo aquí como  AAAA/mi-slug/slides.pdf  (siempre ese nombre de
+         archivo, sin importar el slug; sin `publicar.ps1`, a mano o con el
+         explorador de archivos).
       2. `slug` en CHARLAS apunta al archivo completo, SIN barra final:
-         "AAAA/mi-slug/mi-slug.pdf". El enlace de la tarjeta abre el PDF
+         "AAAA/mi-slug/slides.pdf". El enlace de la tarjeta abre el PDF
          directamente; no hace falta nada más.
 
       Después, en ambos casos:
@@ -240,6 +241,23 @@ h1 {
   z-index: 1;
 }
 
+/* Nota de publicación (referencia formal + enlace aparte). Misma técnica que
+   .resumen: se levanta por encima del enlace que cubre toda la tarjeta para
+   que su propio enlace sea clicleable, sin que abra la charla/PDF en su
+   lugar. */
+.nota {
+  font-size: 0.8rem;
+  margin: 0.6rem 0 0;
+  color: var(--gris);
+  position: relative;
+  z-index: 1;
+}
+
+.nota a {
+  color: var(--uu-blue);
+  white-space: nowrap;
+}
+
 /* Etiquetas. La de idioma va en gris neutro y la de "Próxima" en crema, para
    que solo una de las dos llame la atención. */
 .etiqueta {
@@ -336,20 +354,25 @@ footer a { color: var(--gris); }
        en este bloque. -->
   <h2 class="anio">2026</h2>
   <div class="charla">
-    <h3><a href="2026/epicoh2026-poc-scoping-review/epicoh2026-poc-scoping-review.pdf">Probabilidad de causalidad para la compensación por cáncer de pulmón: una revisión de alcance de métodos y alternativas</a></h3>
+    <h3><a href="2026/epicoh2026-poc-scoping-review/slides.pdf">Probabilidad de causalidad para la compensación por cáncer de pulmón: una revisión de alcance de métodos y alternativas</a></h3>
     <p class="meta">EPICOH 2026 · Estocolmo, Suecia · 26 de agosto de 2026</p>
   </div>
   <div class="charla">
     <h3><a href="2026/comexane-consensos-medicos/">Consensos médicos: ¿cómo actuar ante la falta de evidencia científica?</a></h3>
-    <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · 22 de agosto de 2026</p>
+    <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · Ciudad de México, México · 22 de agosto de 2026</p>
+    <p class="nota">Publicado en: Mancilla-Galindo J. Consensos médicos: ¿cómo actuar ante la falta de evidencia científica?. Rev Mex Anest. 2026;49(Suppl: 1):504-506. <a href="https://www.medigraphic.com/cgi-bin/new/resumen.cgi?IDARTICULO=123906">Ver resumen ↗</a></p>
   </div>
   <div class="charla">
     <h3><a href="2026/comexane-tesis-medico-residente/">Aspectos clave para el médico residente al planear y ejecutar su tesis</a></h3>
-    <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · 20 de agosto de 2026</p>
+    <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · Ciudad de México, México · 21 de agosto de 2026</p>
   </div>
   <div class="charla">
-    <h3><a href="2026/comexane-consenso-vmi/comexane-consenso-vmi.pdf">Consenso Mexicano de Ventilación Mecánica Perioperatoria: resultados de las tres rondas de votación</a></h3>
-    <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · 20 de agosto de 2026</p>
+    <h3><a href="2026/comexane-consenso-vmi/slides.pdf">Consenso Mexicano de Ventilación Mecánica Perioperatoria: resultados de las tres rondas de votación</a></h3>
+    <p class="meta">LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE · Ciudad de México, México · 20 de agosto de 2026</p>
+  </div>
+  <div class="charla">
+    <h3><a href="2026/preprints/slides.pdf">¿Preprints?</a></h3>
+    <p class="meta">Journal club · Institute for Risk Assessment Sciences (IRAS), Utrecht University · Utrecht, Países Bajos · 14 de julio de 2026</p>
   </div>
 </noscript>
 
@@ -378,8 +401,9 @@ footer a { color: var(--gris); }
                 - Baraja interactiva (carpeta con index.html): CON barra
                   final, "AAAA/mi-slug/".
                 - PDF u otro archivo suelto: ruta al archivo completo, SIN
-                  barra final, "AAAA/mi-slug/mi-slug.pdf". El enlace abre
-                  el archivo directamente.
+                  barra final, "AAAA/mi-slug/slides.pdf" (el archivo siempre
+                  se llama `slides.pdf`, no el slug). El enlace abre el
+                  archivo directamente.
      lang     idioma en que se dio la charla: "es" o "en". Pinta la etiqueta
               de idioma Y decide, junto con `titulo`/`resumen`, cuál de los
               dos textos es el original (el otro es la traducción).
@@ -387,11 +411,23 @@ footer a { color: var(--gris); }
               idioma real) NO se traduce de más: la traducción es solo para
               que quien navega en el otro idioma entienda de qué trata.
      evento   congreso, curso o institución. No se traduce (nombre propio).
-     lugar    ciudad y país. Opcional. No se traduce.
+     lugar    {es, en}. Opcional. Formato "Ciudad, País", cada uno en su
+              idioma: Ciudad de México, México / Mexico City, Mexico ·
+              Estocolmo, Suecia / Stockholm, Sweden · Utrecht, Países Bajos /
+              Utrecht, Netherlands. Para una ciudad nueva, seguir el mismo
+              patrón (nombre de la ciudad tal como se escribe en cada idioma,
+              coma, país tal como se escribe en cada idioma).
      fecha    AAAA-MM-DD. De aquí salen el orden, el año y el aviso de
               "Próxima".
      resumen  {es, en} una o dos líneas. Opcional, pero ayuda a quien llega de
               fuera a saber si le interesa.
+     publicacion  {cita, url}. Opcional: cuando la charla (o su resumen) está
+              publicada formalmente (memorias de congreso, revista). `cita`
+              es la referencia completa, en el idioma en que fue publicada
+              (no se traduce); `url` es el enlace a esa publicación. Se
+              muestra como una nota aparte, con su propio enlace, para no
+              interferir con el enlace principal de la tarjeta (que sigue
+              llevando a la charla/PDF).
      =========================================================================== */
 const CHARLAS = [
   {
@@ -402,22 +438,22 @@ const CHARLAS = [
       en: "Key considerations for medical residents planning and conducting their thesis"
     },
     evento: "LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE",
-    lugar:  "México",
-    fecha:  "2026-08-20",
+    lugar:  { es: "Ciudad de México, México", en: "Mexico City, Mexico" },
+    fecha:  "2026-08-21",
     resumen: {
       es: "De la pregunta de investigación al diseño factible: marcos FINER y PICO, elección del diseño, análisis, y qué puede y qué no puede hacer la inteligencia artificial por una tesis.",
       en: "From the research question to a feasible design: the FINER and PICO frameworks, choosing a study design, analysis, and what artificial intelligence can and cannot do for a thesis."
     }
   },
   {
-    slug:   "2026/comexane-consenso-vmi/comexane-consenso-vmi.pdf",
+    slug:   "2026/comexane-consenso-vmi/slides.pdf",
     lang:   "es",
     titulo: {
       es: "Consenso Mexicano de Ventilación Mecánica Perioperatoria: resultados de las tres rondas de votación",
       en: "Mexican Consensus on Perioperative Mechanical Ventilation: results of the three voting rounds"
     },
     evento: "LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE",
-    lugar:  "México",
+    lugar:  { es: "Ciudad de México, México", en: "Mexico City, Mexico" },
     fecha:  "2026-08-20",
     resumen: {
       es: "Resultados de las tres rondas Delphi del Consenso Mexicano de Ventilación Mecánica Perioperatoria: qué preguntas alcanzó a responder la evidencia, dónde persiste el desacuerdo, y la agenda de investigación que se desprende de cada enunciado.",
@@ -429,29 +465,48 @@ const CHARLAS = [
     lang:   "es",
     titulo: {
       es: "Consensos médicos: ¿cómo actuar ante la falta de evidencia científica?",
-      en: "Medical consensus statements: how to act when scientific evidence is lacking?"
+      en: "Medical consensus: how to respond to a lack of scientific evidence?"
     },
     evento: "LII Curso Anual de Actualización en Anestesiología y Medicina Perioperatoria · COMEXANE",
-    lugar:  "México",
+    lugar:  { es: "Ciudad de México, México", en: "Mexico City, Mexico" },
     fecha:  "2026-08-22",
     resumen: {
       es: "Qué es y cómo se construye un consenso médico: método Delphi, guías de reporte ACCORD, y las cuatro formas de incertidumbre que un consenso ayuda a estructurar cuando la evidencia científica falta o no alcanza.",
       en: "What a medical consensus is and how it is built: the Delphi method, ACCORD reporting guidance, and the four kinds of uncertainty a consensus helps structure when scientific evidence is missing or falls short."
+    },
+    publicacion: {
+      cita: "Mancilla-Galindo J. Consensos médicos: ¿cómo actuar ante la falta de evidencia científica?. Rev Mex Anest. 2026;49(Suppl: 1):504-506.",
+      url:  "https://www.medigraphic.com/cgi-bin/new/resumen.cgi?IDARTICULO=123906"
     }
   },
   {
-    slug:   "2026/epicoh2026-poc-scoping-review/epicoh2026-poc-scoping-review.pdf",
+    slug:   "2026/epicoh2026-poc-scoping-review/slides.pdf",
     lang:   "en",
     titulo: {
       es: "Probabilidad de causalidad para la compensación por cáncer de pulmón: una revisión de alcance de métodos y alternativas",
       en: "Probability of Causation for Lung Cancer Compensation: A Scoping Review of Methods and Alternatives"
     },
     evento: "EPICOH 2026",
-    lugar:  "Estocolmo, Suecia",
+    lugar:  { es: "Estocolmo, Suecia", en: "Stockholm, Sweden" },
     fecha:  "2026-08-26",
     resumen: {
       es: "Revisión de alcance de los métodos para estimar la probabilidad de causalidad (PoC) usada para compensar el cáncer de pulmón ocupacional: sus supuestos causales, sus límites, y alternativas como los años de vida perdidos.",
       en: "A scoping review of methods to estimate the probability of causation (PoC) used to compensate occupational lung cancer: their causal assumptions, their limits, and alternatives such as years of life lost."
+    }
+  },
+  {
+    slug:   "2026/preprints/slides.pdf",
+    lang:   "en",
+    titulo: {
+      es: "¿Preprints?",
+      en: "Preprints?"
+    },
+    evento: "Journal club · Institute for Risk Assessment Sciences (IRAS), Utrecht University",
+    lugar:  { es: "Utrecht, Países Bajos", en: "Utrecht, Netherlands" },
+    fecha:  "2026-07-14",
+    resumen: {
+      es: "Qué es un preprint, en qué servidor publicarlo, cómo revisarlos y comentarlos, y por qué incluirlos en un journal club: visibilidad temprana, retroalimentación abierta, y los riesgos de trabajo aún no evaluado por pares.",
+      en: "What a preprint is, which server to use, how to review and comment on them, and why to include them in a journal club: early visibility, open feedback, and the risks of work not yet peer-reviewed."
     }
   }
 ];
@@ -473,8 +528,10 @@ const TEXTOS = {
     hecho:        "Barajas hechas con Quarto y reveal.js",
     proxima:      "Próxima",
     vacio:        "Todavía no hay charlas publicadas.",
-    etiquetaIdioma: { es: "En español", en: "In English" },
-    aria:         { abrir: "Abrir la presentación:" }
+    etiquetaIdioma: { es: "En español", en: "En inglés" },
+    aria:         { abrir: "Abrir la presentación:" },
+    publicadoEn:  "Publicado en",
+    verResumen:   "Ver resumen ↗"
   },
   en: {
     docTitulo:    "Talks · Javier Mancilla Galindo",
@@ -487,7 +544,9 @@ const TEXTOS = {
     proxima:      "Upcoming",
     vacio:        "No talks published yet.",
     etiquetaIdioma: { es: "In Spanish", en: "In English" },
-    aria:         { abrir: "Open the slides:" }
+    aria:         { abrir: "Open the slides:" },
+    publicadoEn:  "Published in",
+    verResumen:   "View abstract ↗"
   }
 };
 
@@ -555,11 +614,18 @@ function dibujar(idioma) {
       ? `<p class="resumen">${escapar(c.resumen[idioma])}</p>`
       : "";
 
-    const lugar = c.lugar ? `<span class="sep">·</span><span>${escapar(c.lugar)}</span>` : "";
+    const lugarTexto = c.lugar ? (c.lugar[idioma] || c.lugar.es) : null;
+    const lugar = lugarTexto ? `<span class="sep">·</span><span>${escapar(lugarTexto)}</span>` : "";
 
     // El título vive en su propio idioma y se traduce para quien navega en
     // el otro; si por algún motivo faltara la traducción, cae al original.
     const titulo = c.titulo[idioma] || c.titulo[c.lang];
+
+    // Nota de publicación: enlace propio, separado del enlace principal de
+    // la tarjeta (ver comentario de .nota en el CSS).
+    const nota = c.publicacion
+      ? `<p class="nota">${escapar(T.publicadoEn)}: ${escapar(c.publicacion.cita)} <a href="${escapar(c.publicacion.url)}" target="_blank" rel="noopener">${T.verResumen}</a></p>`
+      : "";
 
     listado.appendChild(crearElemento(`
       <article class="charla">
@@ -575,6 +641,7 @@ function dibujar(idioma) {
           ${proxima}
         </p>
         ${resumen}
+        ${nota}
       </article>
     `));
   }

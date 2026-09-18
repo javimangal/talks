@@ -25,7 +25,7 @@ talks/
     ├── slug-de-la-charla/
     │   └── index.html          ← baraja interactiva (reveal.js)
     └── otro-slug/
-        └── otro-slug.pdf       ← charla que solo existe en PDF
+        └── slides.pdf          ← charla que solo existe en PDF
 ```
 
 Una charla por carpeta. Si es una baraja interactiva, el archivo **siempre**
@@ -41,7 +41,7 @@ en su propia carpeta sin estorbar.
 
 Si la charla solo existe como PDF (sin baraja de Quarto/reveal.js detrás —
 por ejemplo una presentación institucional hecha en PowerPoint o Keynote), el
-archivo se llama igual que la carpeta: `AAAA/mi-slug/mi-slug.pdf`. La portada
+archivo siempre se llama `slides.pdf`: `AAAA/mi-slug/slides.pdf`. La portada
 enlaza directo a ese archivo; ver «Si la charla solo existe en PDF» más abajo.
 
 ### Por qué `.nojekyll`
@@ -80,8 +80,9 @@ presentación se serviría rota y sin ningún mensaje de error. El archivo
 
 ### Si la charla solo existe en PDF
 
-1. **Copiarla** a `AAAA/mi-slug/mi-slug.pdf` (a mano; `publicar.ps1` es solo
-   para barajas HTML y no aplica aquí).
+1. **Copiarla** a `AAAA/mi-slug/slides.pdf` (a mano; `publicar.ps1` es solo
+   para barajas HTML y no aplica aquí). El archivo siempre se llama
+   `slides.pdf`, sin importar el slug de la carpeta.
 
 ### Después, en ambos casos
 
@@ -92,11 +93,22 @@ presentación se serviría rota y sin ningún mensaje de error. El archivo
 
    El campo `slug` cambia según el caso: con barra final para una baraja
    (`"AAAA/mi-slug/"`, resuelve a `index.html`) o apuntando al archivo completo
-   sin barra final para un PDF (`"AAAA/mi-slug/mi-slug.pdf"`).
+   sin barra final para un PDF (`"AAAA/mi-slug/slides.pdf"`).
 
    El título (`titulo`) lleva **ambos idiomas**, `{es, en}`: el original (el
    que tuvo la charla) y una traducción, para que quien navegue en el otro
    idioma entienda de qué trata sin que se traduzca de más el título real.
+
+   La ciudad (`lugar`) también lleva **ambos idiomas**, `{es, en}`, con el
+   formato «Ciudad, País» en cada uno. Convención para las ciudades ya usadas
+   (y patrón a seguir con una nueva): Ciudad de México, México / Mexico City,
+   Mexico · Estocolmo, Suecia / Stockholm, Sweden · Utrecht, Países Bajos /
+   Utrecht, Netherlands.
+
+   Si la charla (o su resumen) está publicada formalmente —memorias de
+   congreso, revista—, el campo opcional `publicacion: { cita, url }` la
+   muestra como una nota aparte, con su propio enlace, debajo de la tarjeta;
+   no toca el enlace principal, que sigue llevando a la charla o al PDF.
 
    Conviene añadirla también en el bloque `<noscript>`, que es la lista que se
    ve si el navegador tiene JavaScript desactivado.
@@ -134,8 +146,8 @@ empiece por la sede o el congreso: `comexane-tesis-medico-residente`,
 URL para siempre, así que no conviene meter la fecha (ya está en la carpeta del
 año) ni el número de edición del congreso.
 
-Para una charla en PDF, el archivo dentro de la carpeta lleva el mismo nombre
-que el slug: `comexane-consenso-vmi/comexane-consenso-vmi.pdf`.
+Para una charla en PDF, el archivo dentro de la carpeta siempre se llama
+`slides.pdf`, sin importar el slug: `comexane-consenso-vmi/slides.pdf`.
 
 ---
 
